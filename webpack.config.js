@@ -32,9 +32,6 @@ const config = {
       test: /\.js$/,
       use: [{
         loader: 'babel-loader',
-        options: {
-          "presets": ["es2015", "stage-0"]
-        }
       }],
       exclude: path.resolve('node_modules'),
     }]
