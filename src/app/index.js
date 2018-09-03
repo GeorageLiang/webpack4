@@ -1,1 +1,1 @@
-document("hello world!")
+import './index.css';
