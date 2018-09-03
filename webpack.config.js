@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const node_env = process.env.NODE_ENV || 'production';
 const isDev = node_env === 'development';
 const config = {
@@ -9,7 +10,7 @@ const config = {
     filename: 'bundle.js'
   },
   mode: node_env,
-  // devtool: isDev ? 'source-map' : 'eval',
+  devtool: isDev ? 'source-map' : 'eval',
   devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.css'],
@@ -20,7 +21,10 @@ const config = {
   module: {
     rules: [{
       test: /\.css$/,
-      use: ['css-loader', 'style-loader'],
+      use: [
+        isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader',
+      ],
     }]
   },
   plugins: [
@@ -28,6 +32,10 @@ const config = {
       'process.env.NODE_ENV' : JSON.stringify(node_env)
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin({
+      filename: isDev ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDev ? '[id].css' : '[id].[hash].css',
+    })
   ],
 };
 
