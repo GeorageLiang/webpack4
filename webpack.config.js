@@ -4,13 +4,16 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const node_env = process.env.NODE_ENV || 'production';
 const isDev = node_env === 'development';
 const config = {
-  entry: path.resolve('src/app/index.js'),
+  entry: {
+    page1: path.resolve('src/app/index.js'),
+    vendor: ''
+  },
   output: {
     path: path.resolve('dist'),
     filename: 'bundle.js'
   },
   mode: node_env,
-  devtool: isDev ? 'source-map' : 'eval',
+  // devtool: isDev ? 'source-map' : 'eval',
   devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.css'],
@@ -24,7 +27,14 @@ const config = {
       use: [
         isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
-      ],
+      ]
+    }, {
+      test: /\.js$/,
+      use: 'babel-loader',
+      exclude: path.resolve('node_modules'),
+      query: {
+        'presets': ['ES2015', 'stage-0']
+      }
     }]
   },
   plugins: [
