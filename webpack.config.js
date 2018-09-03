@@ -6,7 +6,7 @@ const isDev = node_env === 'development';
 const config = {
   entry: {
     page1: path.resolve('src/app/index.js'),
-    vendor: ''
+    // vendor: ''
   },
   output: {
     path: path.resolve('dist'),
@@ -30,11 +30,13 @@ const config = {
       ]
     }, {
       test: /\.js$/,
-      use: 'babel-loader',
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          "presets": ["es2015", "stage-0"]
+        }
+      }],
       exclude: path.resolve('node_modules'),
-      query: {
-        'presets': ['ES2015', 'stage-0']
-      }
     }]
   },
   plugins: [
