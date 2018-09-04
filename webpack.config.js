@@ -13,7 +13,7 @@ const config = {
     filename: 'bundle.js'
   },
   mode: node_env,
-  // devtool: isDev ? 'source-map' : 'eval',
+  devtool: isDev ? 'source-map' : 'eval',
   devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.css'],
@@ -23,7 +23,7 @@ const config = {
   },
   module: {
     rules: [{
-      test: /\.css$/,
+      test: /\.(css|scss)$/,
       use: [
         isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
@@ -32,8 +32,17 @@ const config = {
       test: /\.js$/,
       use: [{
         loader: 'babel-loader',
+        options: {
+          cacheDirectory: true
+        }
       }],
       exclude: path.resolve('node_modules'),
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      use: [{
+        loader: 'url-loader',
+        // options: 8192,
+      }]
     }]
   },
   plugins: [
