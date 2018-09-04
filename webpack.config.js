@@ -27,6 +27,11 @@ const config = {
       use: [
         isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
+        {
+          loader: 'sass-loader', options: {
+            sourceMap: true
+          }
+        },
       ]
     }, {
       test: /\.js$/,
