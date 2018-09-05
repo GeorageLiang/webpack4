@@ -25,12 +25,12 @@ const config = {
       '@': path.resolve(__dirname, 'src')
     }
   },
-  optimizations: {
-    splitChunks: {
-      chunks: 'all'
-    }
-    //optimization.splitChunks 和 optimization.runtimeChunk ?? js共同代码提取
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'all'
+  //   }
+  //   //optimization.splitChunks 和 optimization.runtimeChunk ?? js共同代码提取
+  // },
   module: {
     rules: [{
       test: /\.(css|scss)$/,
@@ -48,6 +48,16 @@ const config = {
         },
       ]
     }, {
+      test: /\.(png|jpg|jpeg|gif)$/,
+      use: [
+        {
+          loader: 'url-loader',
+          options: {
+            limit: 10
+          }
+        }
+      ]
+    }, {
       test: /\.js$/,
       use: [{
         loader: 'babel-loader',
@@ -60,7 +70,8 @@ const config = {
       test: /\.(png|jpg|gif)$/,
       use: [{
         loader: 'url-loader', options: {
-          limit: 8192
+          // limit: 8192
+          limit: 10
         }
       }]
     }]
@@ -70,7 +81,7 @@ const config = {
       'process.env.NODE_ENV' : JSON.stringify(node_env)
     }),
     new HtmlWebpackPlugin({
-      filename: 'index_bundle.html',
+      filename: 'index.html',
       template: path.resolve('src/app/index.html')
     }),
   ],
