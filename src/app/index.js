@@ -1,3 +1,4 @@
+import './index.scss';
 const dec = {};
 // const promise = new Promise();
 console.log('123');

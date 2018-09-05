@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const node_env = process.env.NODE_ENV || 'production';
 const isDev = node_env === 'development';
@@ -25,12 +26,12 @@ const config = {
       '@': path.resolve(__dirname, 'src')
     }
   },
-  optimizations: {
-    splitChunks: {
-      chunks: 'all'
-    }
-    //optimization.splitChunks 和 optimization.runtimeChunk ?? js共同代码提取
-  },
+  // optimizations: {
+  //   splitChunks: {
+  //     chunks: 'all'
+  //   }
+  //   //optimization.splitChunks 和 optimization.runtimeChunk ?? js共同代码提取
+  // },
   module: {
     rules: [{
       test: /\.(css|scss)$/,
@@ -57,7 +58,7 @@ const config = {
       }],
       exclude: path.resolve('node_modules'),
     }, {
-      test: /\.(png|jpg|gif)$/,
+      test: /\.(png|svg|jpg|jpeg|gif)$/,
       use: [{
         loader: 'url-loader', options: {
           limit: 8192
@@ -70,7 +71,7 @@ const config = {
       'process.env.NODE_ENV' : JSON.stringify(node_env)
     }),
     new HtmlWebpackPlugin({
-      filename: 'index_bundle.html',
+      filename: 'index.html',
       template: path.resolve('src/app/index.html')
     }),
   ],
@@ -97,6 +98,7 @@ if (isDev) {
       filename: '[name].[hash].css',
       chunkFilename: '[id].[hash].css',
     }),
+    new CleanWebpackPlugin(['dist'])
   );
 }
 module.exports = config;
