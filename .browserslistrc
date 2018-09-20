@@ -1,0 +1,11 @@
+# Browsers that we support
+
+[production staging]
+> 1%
+last 4 version
+Android >= 4.0
+iOS >= 7
+
+[development]
+> 1%
+last 4 version
