@@ -1,7 +1,7 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require('path');
+const webpack = require('webpack');
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -16,7 +16,7 @@ const config = {
   },
   output: {
     path: path.resolve('dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   mode: node_env,
   devtool: isDev ? 'source-map' : 'eval',
@@ -24,14 +24,13 @@ const config = {
     extensions: ['.js', '.css'],
     alias: {
       '@': path.resolve(__dirname, 'src')
-    }
+    },
   },
-  // optimizations: {
-  //   splitChunks: {
-  //     chunks: 'all'
-  //   }
-  //   //optimization.splitChunks 和 optimization.runtimeChunk ?? js共同代码提取
-  // },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
   module: {
     rules: [{
       test: /\.(css|scss)$/,
@@ -47,6 +46,13 @@ const config = {
             sourceMap: isDev
           }
         },
+        {
+          loader: "postcss-loader", options: {
+              plugins: [
+                require("autoprefixer")
+              ]
+          }
+        }
       ]
     }, {
       test: /\.js$/,
@@ -55,7 +61,7 @@ const config = {
         options: {
           cacheDirectory: true
         }
-      }],
+      }, 'eslint-loader'],
       exclude: path.resolve('node_modules'),
     }, {
       test: /\.(png|svg|jpg|jpeg|gif)$/,
@@ -71,9 +77,10 @@ const config = {
       'process.env.NODE_ENV' : JSON.stringify(node_env)
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
+      filename: 'index.html?[hash]',
       template: path.resolve('src/app/index.html')
     }),
+    new CleanWebpackPlugin(['dist'])
   ],
 };
 
@@ -97,8 +104,7 @@ if (isDev) {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
       chunkFilename: '[id].[hash].css',
-    }),
-    new CleanWebpackPlugin(['dist'])
+    })
   );
 }
 module.exports = config;
