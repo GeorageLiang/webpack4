@@ -12,7 +12,6 @@ const isDev = node_env === 'development';
 const config = {
   entry: {
     page1: path.resolve('src/app/index.js'),
-    // vendor: ''
   },
   output: {
     path: path.resolve('dist'),
